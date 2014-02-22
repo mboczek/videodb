@@ -166,17 +166,31 @@ if (isset($q) &! (isset($default) && empty($q)))
     // filter by genres
 	if (count($genres))
 	{
-        $JOINS  .= ' LEFT JOIN '.TBL_VIDEOGENRE.' ON '.TBL_DATA.'.id = '.TBL_VIDEOGENRE.'.video_id ';
-        $WHERES .= ' AND '.TBL_DATA.'.id = '.TBL_VIDEOGENRE.'.video_id AND (';
-
-		foreach ($genres as $genre)
-        {
-            $FILTER .= 'OR '.TBL_VIDEOGENRE.'.genre_id = '.$genre.' ';
-		}
+		if($config['and_genre_search']){
+			$WHERES .= ' AND '.TBL_DATA.'.id IN (';
+			$WHERES.='SELECT g.video_id FROM (SELECT video_id, count(genre_id) AS genres FROM '.TBL_VIDEOGENRE.' WHERE ';
+				
+			foreach ($genres as $genre)
+				$FILTER .= 'OR genre_id = '.$genre.' ';
+			$FILTER  = preg_replace('/^OR/', '', $FILTER);
+			$WHERES .= $FILTER.' GROUP BY video_id) AS g';
+			$WHERES .= ' WHERE g.genres='.count($genres).')';
 		
-        $FILTER  = preg_replace('/^OR/', '', $FILTER);
-		$WHERES .= $FILTER;
-		$WHERES .= ')';
+		}
+		else 
+		{
+	        $JOINS  .= ' LEFT JOIN '.TBL_VIDEOGENRE.' ON '.TBL_DATA.'.id = '.TBL_VIDEOGENRE.'.video_id ';
+	        $WHERES .= ' AND '.TBL_DATA.'.id = '.TBL_VIDEOGENRE.'.video_id AND (';
+	
+			foreach ($genres as $genre)
+	        {
+	            $FILTER .= 'OR '.TBL_VIDEOGENRE.'.genre_id = '.$genre.' ';
+			}
+			
+	        $FILTER  = preg_replace('/^OR/', '', $FILTER);
+			$WHERES .= $FILTER;
+			$WHERES .= ')';
+		}
 	}
 
     // limit visibility
