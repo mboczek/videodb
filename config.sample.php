@@ -96,4 +96,10 @@ require_once 'pdf.inc.php';
 $config['dvdb_user']     = '';
 $config['dvdb_password'] = '';
 
+/*
+ * Settings for mediainfo rpc service
+*/
+$config['xmlrpc_mediainfo_server'] = '';
+$config['xmlrpc_mediainfo_secret'] = '';
+
 ?>

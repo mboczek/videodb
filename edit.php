@@ -175,6 +175,10 @@ if ($lookup && $imdbID)
 
     // get external data
     $imdbdata = engineGetData($imdbID, $engine);
+    
+    // get mediainfo data
+    require_once './engines/mediainfo_rpc.php';
+    $imdbdata=get_mediainfo($diskid, $title, $imdbdata);
 
     // lookup cover
     if (empty($imgurl) || ($lookup > 1))
