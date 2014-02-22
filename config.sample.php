@@ -96,4 +96,11 @@ require_once 'pdf.inc.php';
 $config['dvdb_user']     = '';
 $config['dvdb_password'] = '';
 
+/*
+*  Genre conjunction search
+*  
+*  Genre will be search with logical AND. It means that Videodb will search for movies that have ALL selected genres, not just ONE of them 
+*/
+$config['and_genre_search'] = '0';
+
 ?>

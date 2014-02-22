@@ -38,8 +38,6 @@ function unQuote(s)
  */
 function submitSearch()
 {
-	if (!document.search.q.value) return false;
-
 	with (document.search)
 	{
 		var radio;
@@ -50,6 +48,8 @@ function submitSearch()
 			}
 			if (radio) break;
 		}
+		
+		if (!document.search.q.value && radio != "videodb") return false;
 
 		switch (radio)
 		{
