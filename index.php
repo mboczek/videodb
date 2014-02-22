@@ -152,8 +152,8 @@ if (!$showtv) $WHERES .= ' AND istv = 0';
 // any user has automatically read permissions for his personal data
 if ($config['multiuser']) 
 {
-    // get owner from session- or use current user
-    session_default('owner', get_username(get_current_user_id()));
+    // get owner from session- or use any user
+	session_default('owner', $lang[filter_any]);
     
     // if we don't have read all permissions, limit visibility using cross-user permissions
     if (!check_permission(PERM_READ))
