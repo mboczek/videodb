@@ -20,6 +20,8 @@
                 <br/>
                 {include file="searchradios.tpl"}
                 <input type="button" value="{$lang.l_search}" onClick="submitSearch()" class="button" />
+                <br/>
+        		<input type="checkbox" name="user_unseen" id="user_unseen" value="1" {if $user_unseen} CHECKED{/if}/><label for="user_unseen">{$lang.radio_unseen}</label>
             </td>
           </tr>
           <tr>

@@ -178,6 +178,11 @@ if (isset($q) &! (isset($default) && empty($q)))
 		$WHERES .= $FILTER;
 		$WHERES .= ')';
 	}
+	
+	//filter by unseen
+	if($user_unseen){
+		$WHERES .= ' AND ISNULL('.TBL_USERSEEN.'.video_id)';
+	}
 
     // limit visibility
     if ($config['multiuser'])
@@ -275,6 +280,7 @@ tpl_list($result);
 
 $smarty->assign('q', $q);
 $smarty->assign('q_q', formvar($q));
+$smarty->assign('user_unseen', $user_unseen);
 $smarty->assign('search_fields', $search_fields);
 $smarty->assign('genreselect', out_genres($genres));
 $smarty->assign('genres', out_genres2($genres));
