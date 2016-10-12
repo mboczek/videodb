@@ -3,7 +3,7 @@
  * Edit functions. Split into separate file for reuse.
  *
  * @package videoDB
- * @author  Andreas Götz <cpuidle@gmx.de>
+ * @author  Andreas Gï¿½tz <cpuidle@gmx.de>
  * @author  Andreas Gohr <a.gohr@web.de>
  * @author  Chinamann <chinamann@users.sourceforge.net>
  * @version $Id: edit.core.php,v 1.9 2009/12/05 13:56:04 andig2 Exp $
@@ -86,7 +86,7 @@ function removeArticles($field)
                       'ein ', 'eine ', 'eines ', 'le ', 'el ', "l'", 'il ', 'les ', 'i ',
                       'o ', 'un ', 'los ', 'de ', 'an ', 'una ', 'las ', 'gli ', 'het ',
                       'lo ', 'os ', 'az ', 'ha-', 'een ', 'det ', 'oi ', 'ang ', 'ta ',
-                      'al-', 'uno ', "un'", 'ett ', 'mga ', 'Ï ', 'Ç ', 'els ', 'Ôï ', 'Ïé ');
+                      'al-', 'uno ', "un'", 'ett ', 'mga ', 'ï¿½ ', 'ï¿½ ', 'els ', 'ï¿½ï¿½ ', 'ï¿½ï¿½ ');
 
     foreach ($articles as $article)
     {
@@ -248,6 +248,28 @@ function processUpload($id, $file, $mime, $name)
         $coverfile = 'cache/img/'.$id.'.'.$ext;
         if (move_uploaded_file($file, $coverfile))
         {
+        	//Resize image if too big
+        	$maxheight=1000;
+        	
+        	list($width, $height) = getimagesize($coverfile);
+        	
+        	if($height>$maxheight)
+        	{
+        		$newheight=$maxheight;
+        		$newwidth=round(($newheight*$width)/$height,0);
+        	}
+        	
+        	if($ext=='jpg' || $ext=='jpeg') $src = imagecreatefromjpeg($coverfile);
+        	if($ext=='png') $src = imagecreatefrompng($coverfile);
+        	if($ext=='gif') $src = imagecreatefromgif($coverfile);
+        	
+        	$dst = imagecreatetruecolor($newwidth, $newheight);
+        	imagecopyresampled($dst, $src, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
+        	
+        	if($ext=='jpg' || $ext=='jpeg') imagejpeg($dst,$coverfile);
+        	if($ext=='png') imagepng($dst,$coverfile);
+        	if($ext=='gif') imagegif($dst,$coverfile);
+        	
             // fix permission issues
             chmod($coverfile, 0644);
             
