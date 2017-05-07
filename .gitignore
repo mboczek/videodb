@@ -1,3 +1,6 @@
 # Files to be ignored by git
 config.inc.php
 log.txt
+.htaccess
+cache/
+tmp/
